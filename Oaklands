@@ -1,0 +1,123 @@
+local Players = game:service("Players")
+local Player = Players.LocalPlayer
+local userInput = game:service("UserInputService")
+local runService = game:service("RunService")
+repeat wait() until Player.Character
+local Character = Player.Character
+local pHum = Character:WaitForChild("Humanoid")
+local humRoot = Character:WaitForChild("HumanoidRootPart")
+local UserInputService = game:GetService("UserInputService")
+local GuiService = game:GetService("GuiService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Multiplier = 0
+local intens = 0
+local VSPEED = 40
+local GV = 196.1999969482422
+local a=game.Players.LocalPlayer
+local b=a.Character
+local c=b:WaitForChild("Humanoid")
+
+for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+   v:Disable()
+end
+
+game:GetService("RunService").Stepped:Connect(function()
+    if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+        local Humanoid = workspace.CurrentCamera.CameraSubject;
+        if Humanoid:IsA("Humanoid") then
+            Humanoid.SeatPart:ApplyImpulse(Humanoid.SeatPart.CFrame.LookVector * Vector3.new(intens, intens, intens))
+        elseif Humanoid:IsA("BasePart") then
+            Humanoid:ApplyImpulse(Humanoid.CFrame.LookVector * Vector3.new(intens, intens, intens))
+        end
+    end
+ end)
+
+local player = game.Players.LocalPlayer.Character
+
+if game.Players.LocalPlayer.Character == nil then
+   print("Couldn't get player name")
+end
+
+print(player, "- Got player's name..")
+
+task.wait(Random.new():NextNumber(0.05, 0.15))
+
+print("Loading gui..")
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Oaklands ðŸŒ²", HidePremium = true, SaveConfig = false, ConfigFolder = "Oaklands"})
+local Tab = Window:MakeTab({
+	Name = "Miscellaneous",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Full Bright",
+	Callback = function()
+	local Light = game:GetService("Lighting")
+ 
+   function dofullbright()
+   Light.Ambient = Color3.new(1, 1, 1)
+   Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+   Light.ColorShift_Top = Color3.new(1, 1, 1)
+   end
+    
+   dofullbright()
+    
+   Light.LightingChanged:Connect(dofullbright)
+ end)
+})
+local Section = Tab:AddSection({
+	Name = "Teleport to..?"
+})
+Tab:AddButton({
+	Name = "Meteor",
+	Callback = function()
+      		    local player = game.Players.LocalPlayer.Character
+    local part = game:GetService("Workspace").World.Effects.Smoke.Part
+    player.HumanoidRootPart.CFrame = part.CFrame
+
+    wait (1)
+
+    for _,p in pairs(game.Players:GetPlayers()) do
+
+        p.Character:WaitForChild("Humanoid").Jump = true
+        
+        end
+
+    local player = game.Players.LocalPlayer.Character
+    local part = game:GetService("Workspace").World.Effects.Crater.Torus
+    player.HumanoidRootPart.CFrame = part.CFrame
+
+    for i,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Model") and v.Name == "Smoke" then
+           v:Destroy()
+        else
+            
+        end
+    end
+
+end)
+})
+local Section = Tab:AddSection({
+	Name = "Be Invincible"
+})
+Tab:AddToggle({
+	Name = "Spore Shots",
+	Default = false,
+	Callback = function(AS)
+	shared["ANTISPORE"] = AS
+    while shared["ANTISPORE"] do
+      task.wait (0.01)
+      if not shared["ANTISPORE"] then
+          break
+      end
+    for i,v in pairs(workspace.World.Effects:GetDescendants()) do
+        if v:IsA("Part") and v.Name == "Spore" then
+            v:Destroy()
+        end
+    end
+  end
+ end)
+})
